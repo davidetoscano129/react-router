@@ -1,22 +1,11 @@
-# React Blog Form Multifield
+# React Blog Pages
 
-**Esercizio**
+**Consegna**
+Creiamo il frontend del nostro Blog e le sue pagine!
+- Partiamo installando React Router DOM: `npm install react-router-dom`
+- Definiamo almeno 3 pagine: una homepage, una pagina “chi siamo” e una pagina con la lista dei post
+- Implementiamo una navbar in comune a tutte le pagine per poter navigare tra loro
 
-Ampliare l'esercizio precedente aggiungendo, nel form, i campi per immagine, contenuto, categoria (select) e uno stato per pubblicare o meno l'articolo.
-Utilizzare un unico oggetto per gestire tutti i dati del form.
-
-BONUS:
-1. Aggiungere tags (lista di checkbox) nel form
-2. Aggiungere uno useEffect che mostri un alert quando l’utente clicca sull’apposita checkbox per pubblicare un articolo.
-
-
-**Continuzione**
-
-Completare aggiungendo l'invio di dati del form all'API (senza tag).
-Implementare funzione di cancellazione del post.
-
-BONUS:
-1. Creare componente card per il post
-2. Aggiungere la possibilità di selezionare i tag nel form:
-Nel caso avevate implementato l'endpoint API per i tag, fate la chiamata axios per avere elenco di tag. Altrimenti create array di tag statico nel progetto react js.
-3. Aggiungere la possibilità di filtrare i post per i tag (nel caso l'avevi implementato in BE)
+**Bonus
+- Centralizzare la Navbar grazie a un Layout
+- Gestire la classe *active*

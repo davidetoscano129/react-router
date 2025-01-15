@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
+
 import axios from 'axios';
-import '../App.css';
-import PostCard from './PostCard';
+import './App.css';
+import PostCard from './components/PostCard';
+import Navbar from './components/Navbar';
+import HomePage from './components/HomePage';
+import AboutPage from './components/AboutPage';
+import PostsPage from './components/PostsPage';
 
 function App() {
   const [formData, setFormData] = useState({
@@ -63,6 +69,17 @@ function App() {
   return (
     <div className="App">
       <h1>React Blog Form Multifield</h1>
+
+      <div className="App">
+        <Navbar />  {/* Aggiunto qui */}
+
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/posts" element={<PostsPage />} />
+        </Routes>
+      </div>
+
       <form onSubmit={handleSubmit}>
         {/* Campi del form */}
         <input
