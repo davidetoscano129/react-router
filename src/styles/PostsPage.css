@@ -1,0 +1,13 @@
+.posts-page {
+    padding: 20px;
+}
+
+.posts-page h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.posts-page ul {
+    list-style: none;
+    padding: 0;
+}

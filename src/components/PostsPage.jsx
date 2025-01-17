@@ -1,19 +1,24 @@
+import '../styles/PostsPage.css';
 import React from 'react';
 import PostCard from './PostCard';
 
-const PostsPage = ({ articles, handleDelete }) => {
+function PostsPage({ articles, handleDelete }) {
     return (
         <div>
-            <h1>Lista degli Articoli</h1>
+            <h2>Lista degli Articoli</h2>
             <ul>
-                {articles.map((article) => (
-                    <li key={article.id}>
-                        <PostCard article={article} handleDelete={handleDelete} />
-                    </li>
-                ))}
+                {Array.isArray(articles) && articles.length > 0 ? (
+                    articles.map((article) => (
+                        <li key={article.id}>
+                            <PostCard article={article} handleDelete={handleDelete} />
+                        </li>
+                    ))
+                ) : (
+                    <p>Nessun articolo disponibile.</p>
+                )}
             </ul>
         </div>
     );
-};
+}
 
 export default PostsPage;

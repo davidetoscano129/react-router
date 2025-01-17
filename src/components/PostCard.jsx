@@ -1,3 +1,4 @@
+import '../styles/PostCard.css';
 import React from 'react';
 
 const PostCard = ({ article, handleDelete }) => {

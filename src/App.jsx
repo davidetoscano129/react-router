@@ -1,8 +1,9 @@
+import './styles/App.css';
 import { useState, useEffect } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-
+import { Routes, Route } from 'react-router-dom';
 import axios from 'axios';
-import './App.css';
+
+import Layout from './components/Layout';
 import PostCard from './components/PostCard';
 import Navbar from './components/Navbar';
 import HomePage from './components/HomePage';
@@ -43,7 +44,7 @@ function App() {
     if (formData.title.trim() !== '') {
       axios.post('http://localhost:3001/api/posts', formData)
         .then((res) => {
-          setArticles((prev) => [...prev, res.data]); // Aggiorna lo stato con il nuovo articolo
+          setArticles((prev) => [...prev, res.data]);
           setFormData({
             title: '',
             image: '',
@@ -61,24 +62,24 @@ function App() {
   const handleDelete = (id) => {
     axios.delete(`http://localhost:3001/api/posts/${id}`)
       .then(() => {
-        setArticles((prev) => prev.filter((article) => article.id !== id)); // Filtra per ID
+        setArticles((prev) => prev.filter((article) => article.id !== id));
       })
       .catch((err) => console.error('Errore nell\'eliminare l\'articolo:', err));
   };
 
   return (
     <div className="App">
-      <h1>React Blog Form Multifield</h1>
 
-      <div className="App">
-        <Navbar />  {/* Aggiunto qui */}
-
+      <div className="container">
+        <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/posts" element={<PostsPage />} />
         </Routes>
       </div>
+
+      <h1>React Blog Form Multifield</h1>
 
       <form onSubmit={handleSubmit}>
         {/* Campi del form */}
@@ -132,61 +133,29 @@ function App() {
 
         <fieldset>
           <legend>Tags:</legend>
-          <label>
-            <input
-              type="checkbox"
-              value="React"
-              checked={formData.tags.includes('React')}
-              onChange={(e) => {
-                const value = e.target.value;
-                setFormData((prev) => ({
-                  ...prev,
-                  tags: e.target.checked
-                    ? [...prev.tags, value]
-                    : prev.tags.filter((tag) => tag !== value),
-                }));
-              }}
-            />
-            React
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              value="JavaScript"
-              checked={formData.tags.includes('JavaScript')}
-              onChange={(e) => {
-                const value = e.target.value;
-                setFormData((prev) => ({
-                  ...prev,
-                  tags: e.target.checked
-                    ? [...prev.tags, value]
-                    : prev.tags.filter((tag) => tag !== value),
-                }));
-              }}
-            />
-            JavaScript
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              value="CSS"
-              checked={formData.tags.includes('CSS')}
-              onChange={(e) => {
-                const value = e.target.value;
-                setFormData((prev) => ({
-                  ...prev,
-                  tags: e.target.checked
-                    ? [...prev.tags, value]
-                    : prev.tags.filter((tag) => tag !== value),
-                }));
-              }}
-            />
-            CSS
-          </label>
+          {["React", "JavaScript", "CSS"].map((tag) => (
+            <label key={tag}>
+              <input
+                type="checkbox"
+                value={tag}
+                checked={formData.tags.includes(tag)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setFormData((prev) => ({
+                    ...prev,
+                    tags: e.target.checked
+                      ? [...prev.tags, value]
+                      : prev.tags.filter((t) => t !== value),
+                  }));
+                }}
+              />
+              {tag}
+            </label>
+          ))}
         </fieldset>
         <br />
 
-        <button onClick={() => handleDelete(articles.id)}>Elimina</button>
+        <button type="submit">Aggiungi Articolo</button>
       </form>
 
       <label>Filtra per Tag:</label>
@@ -197,7 +166,6 @@ function App() {
         <option value="CSS">CSS</option>
       </select>
 
-      {/* Lista articoli */}
       <h2>Articoli</h2>
       <ul>
         {articles
