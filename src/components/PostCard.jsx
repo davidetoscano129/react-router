@@ -1,18 +1,16 @@
 import '../styles/PostCard.css';
-import React from 'react';
+import { Link } from 'react-router-dom';
 
-const PostCard = ({ article, handleDelete }) => {
+function PostCard({ article, handleDelete }) {
     return (
         <div className="post-card">
-            <h3>{article.title}</h3>
-            <img src={article.image} alt={article.title} style={{ width: '200px' }} />
+            <h3>
+                <Link to={`/posts/${article.id}`}>{article.title}</Link>
+            </h3>
             <p>{article.content}</p>
-            <p>Categoria: {article.category}</p>
-            <p>Stato: {article.isPublished ? 'Pubblicato' : 'Bozza'}</p>
-            <p>Tags: {article.tags.join(', ')}</p>
             <button onClick={() => handleDelete(article.id)}>Elimina</button>
         </div>
     );
-};
+}
 
 export default PostCard;

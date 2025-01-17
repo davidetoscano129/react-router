@@ -1,6 +1,6 @@
 import './styles/App.css';
 import { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import Layout from './components/Layout';
@@ -9,6 +9,8 @@ import Navbar from './components/Navbar';
 import HomePage from './components/HomePage';
 import AboutPage from './components/AboutPage';
 import PostsPage from './components/PostsPage';
+import PostDetailPage from './components/PostDetailPage';
+import NotFoundPage from './components/NotFoundPage';  // Per la pagina 404
 
 function App() {
   const [formData, setFormData] = useState({
@@ -22,8 +24,9 @@ function App() {
 
   const [filterTag, setFilterTag] = useState('');
   const [articles, setArticles] = useState([]);
+  const navigate = useNavigate();
 
-  // Fetch iniziale degli articoli al caricamento del componente
+  // Fetch iniziale degli articoli
   useEffect(() => {
     axios.get('http://localhost:3001/api/posts')
       .then((res) => {
@@ -53,8 +56,9 @@ function App() {
             isPublished: false,
             tags: [],
           });
+          navigate(`/posts/${res.data.id}`);  // Reindirizza alla pagina di dettaglio
         })
-        .catch((err) => console.error('Errore nell\'aggiungere un articolo:', err));
+        .catch((err) => console.error("Errore nell'aggiungere un articolo:", err));
     }
   };
 
@@ -64,31 +68,31 @@ function App() {
       .then(() => {
         setArticles((prev) => prev.filter((article) => article.id !== id));
       })
-      .catch((err) => console.error('Errore nell\'eliminare l\'articolo:', err));
+      .catch((err) => console.error("Errore nell'eliminare l'articolo:", err));
   };
 
   return (
     <div className="App">
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="posts" element={<PostsPage articles={articles} handleDelete={handleDelete} />} />
+          <Route path="posts/:id" element={<PostDetailPage />} />
+          <Route path="*" element={<NotFoundPage />} /> {/* Pagina 404 */}
+        </Route>
+      </Routes>
 
-      <div className="container">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/posts" element={<PostsPage />} />
-        </Routes>
-      </div>
-
+      {/* Form per creare un nuovo articolo */}
       <h1>React Blog Form Multifield</h1>
-
       <form onSubmit={handleSubmit}>
-        {/* Campi del form */}
         <input
           type="text"
           name="title"
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           placeholder="Inserisci il titolo dell'articolo"
+          required
         />
         <br />
 
@@ -106,6 +110,7 @@ function App() {
           value={formData.content}
           onChange={(e) => setFormData({ ...formData, content: e.target.value })}
           placeholder="Inserisci il contenuto dell'articolo"
+          required
         />
         <br />
 
@@ -118,17 +123,6 @@ function App() {
           <option value="Lifestyle">Lifestyle</option>
           <option value="Education">Education</option>
         </select>
-        <br />
-
-        <label>
-          <input
-            type="checkbox"
-            name="isPublished"
-            checked={formData.isPublished}
-            onChange={(e) => setFormData({ ...formData, isPublished: e.target.checked })}
-          />
-          Pubblica l'articolo
-        </label>
         <br />
 
         <fieldset>
